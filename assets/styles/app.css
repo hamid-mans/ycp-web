@@ -1,3 +1,113 @@
-body {
-    background-color: skyblue;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+    --clr-nav: #212a31
+}
+
+*:not i {
+    padding: 0;
+    margin: 0;
+}
+
+h1,h2,h3,h4,h5,h6 {font-family: 'Inter', sans-serif !important;}
+.logo {text-align:center;}
+.logo img {height: 200px;}
+.clr_bg { background-color: #97aec7 !important; }
+.edit-color {color: #a68e64 !important;}
+.delete-color {color: #fa6464 !important;}
+hr {border: 2px solid #212a31;border-radius:2px;margin: 50px 0px 30px 0px;}
+table thead tr th {background-color: #212a31 !important;color:white !important;}
+
+.ui.container {padding-top: 40px;}
+.ui.content {padding-top: 40px;margin-left: 270px !important;width: 70%;}
+
+html, body {
+    background-color: #d5dde7;
+    font-family: 'Inter', sans-serif !important;
+}
+
+
+
+.c-block {
+    width: 50%;
+
+    margin: auto;
+}
+
+.block {
+    border: 2px solid #97aec7 !important;
+    box-shadow: #97aec7 1px 1px 10px !important;
+}
+
+.sidebaricon {font-size: 20px !important;}
+.p_sidebar {padding-top:50px;}
+
+.menu-top {
+    border-radius: 0 !important;
+    background-color: #212a31 !important;
+    border: none !important;
+    z-index: 9999;
+    height: 40px !important;
+    margin-bottom: 30px !important;
+}
+
+
+.p_sidebar {
+    background-color: #212a31 !important;
+}
+
+.p_sidebar .p_logo {
+    width: 100%;
+    text-align: center !important;
+}
+
+.p_sidebar .p_logo img {
+    width: 150px;
+}
+
+.p_sidebar i {
+    margin-right: 10px;
+}
+
+.p_sidebar ul {
+    padding: 0;margin: 0;
+}
+
+.p_sidebar li {
+    color: white !important;
+    margin: 10px 20px 10px 20px;
+    list-style-type: none;
+    font-size: 16px;
+    font-family: "Inter", serif !important;
+    padding: 13px 10px 13px 10px !important;
+    border-radius: 10px !important;
+}
+
+.p_sidebar a {color: white !important;}
+
+.p_sidebar li:hover {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.p_sidebar .it i {
+    font-size: 17px !important;
+}
+
+.statistic {
+    background-color: rgba(33,42,49, 0.9);
+    padding: 20px 80px 20px 80px;
+    border-radius: 10px;
+}
+
+.statistic .label {
+    margin-top: 10px !important;
+}
+
+.statistic > * {
+    color: white !important;
+}
+
+.th_action {
+    text-align: center !important;
+    width: 5% !important;
 }

@@ -1,0 +1,197 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block body %}
+
+<div class="ui content">
+    <h1 class="ui header">
+        Paramètres
+    </h1><br>
+
+    {% for msg in app.flashes('error') %}
+        {{ component('Alert', {type: 'error', text: msg}) }}
+        <br>
+    {% endfor %}
+
+    {% for msg in app.flashes('success') %}
+        {{ component('Alert', {type: 'success', text: msg}) }}
+        <br>
+    {% endfor %}
+
+    <h3>
+        Gestion des utilisateurs & droits
+    </h3>
+
+    <a href="{{ path('app_dashboard_settings_new_user') }}">
+        <div class="ui green icon labeled button">
+            <i class="plus icon"></i>
+            Nouvel utilisateur
+        </div>
+    </a>
+
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Rôles</th>
+                <th class="th_action"><i class="close icon"></i></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td><a href="{{ path('app_dashboard_settings_edit_user', {id: user.id}) }}">{{ user.name }}</a></td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% for role in user.roles|sort %}
+                            {% set icon = '' %}
+                            {% if role == 'ROLE_ADMIN' %}
+                                {% set icon = 'red shield alternate' %}
+                            {% elseif role == 'ROLE_USER' %}
+                                {% set icon = 'blue user' %}
+                            {% endif %}
+
+                            <i class="icon {{ icon }}"></i>
+                            <b>{{ role|replace({'ROLE_' : ''})|capitalize }}</b>{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if 'ROLE_ADMIN' not in user.roles %}
+                            <a class="ui red label" href="{{ path('app_dashboard_settings_delete_user', {id: user.id}) }}">Supprimer</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>
+        <i>Pour information : Un administrateur ne peut pas modifier/supprimer le profil d'un autre administrateur.</i>
+    </p>
+
+    <hr>
+
+    <div class="ui stackable grid">
+        <div class="eight wide column">
+            <h3 class="ui header">
+                Types de serveurs
+            </h3>
+
+            <a href="{{ path('app_dashboard_settings_add_type_server') }}">
+                <div class="ui green icon labeled button">
+                    <i class="plus icon"></i>
+                    Nouveau
+                </div>
+            </a>
+
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th class="th_action"><i class="delete icon"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for type in typesServeurs %}
+                    <tr>
+                        <td><a href="{{ path('app_dashboard_settings_edit_type_server', {id: type.id}) }}">{{ type.name }}</a></td>
+                        <td><a class="ui red label" href="{{ path('app_dashboard_settings_delete_type_server', {id: type.id}) }}">Supprimer</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="eight wide column">
+            <h3 class="ui header">
+                Outils de prise en main
+            </h3>
+
+            <a href="{{ path('app_dashboard_settings_add_remote_tool') }}">
+                <div class="ui green icon labeled button">
+                    <i class="plus icon"></i>
+                    Nouvel
+                </div>
+            </a>
+
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th class="th_action"><i class="delete icon"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for tool in remoteControlTool %}
+                    <tr>
+                        <td><a href="{{ path('app_dashboard_settings_edit_remote_tool', {id: tool.id}) }}">{{ tool.name }}</a></td>
+                        <td><a class="ui red label" href="{{ path('app_dashboard_settings_delete_remote_tool', {id: tool.id}) }}">Supprimer</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="eight wide column">
+            <h3 class="ui header">
+                Types de base de données
+            </h3>
+
+            <a href="{{ path('app_dashboard_settings_add_type_database') }}">
+                <div class="ui green icon labeled button">
+                    <i class="plus icon"></i>
+                    Nouveau
+                </div>
+            </a>
+
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th class="th_action"><i class="close icon"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for database in typesDatabase %}
+                    <tr>
+                        <td><a href="{{ path('app_dashboard_settings_edit_type_database', {id: database.id}) }}">{{ database.name }}</a></td>
+                        <td><a href="{{ path('app_dashboard_settings_remove_type_database', {id: database.id}) }}"><span class="ui red label">Supprimer</span></a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="eight wide column">
+            <h3 class="ui header">
+                Liste des logiciels
+            </h3>
+
+            <a href="{{ path('app_dashboard_settings_add_type_software') }}">
+                <div class="ui green icon labeled button">
+                    <i class="plus icon"></i>
+                    Nouveau
+                </div>
+            </a>
+
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th class="th_action"><i class="close icon"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for software in typesSoftware %}
+                    <tr>
+                        <td><a href="{{ path('app_dashboard_settings_edit_type_software', {id: software.id}) }}">{{ software.name }}</a></td>
+                        <td><a href="{{ path('app_dashboard_settings_delete_type_software', {id: software.id}) }}"><span class="ui red label">Supprimer</span></a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

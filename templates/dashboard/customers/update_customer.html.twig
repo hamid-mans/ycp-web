@@ -1,0 +1,187 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Modifier le client {{ customer.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header" title="{{ "ID : " ~  customer.id }}">
+            Client : {{ customer.name }}
+        </h2>
+
+        <span><i>Mettez à jour les informations principales du client et accédez à l'ensemble des détails liés à sa fiche.</i></span>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+        {% endfor %}
+
+        {% for msg in app.flashes('success') %}
+            {{ component('Alert', {type: 'success', text: msg}) }}
+        {% endfor %}
+
+        <br><br><form method="POST" class="ui form">
+            {{ form_start(updateCustomerForm) }}
+
+            <div class="field">
+                <label>Nom du client</label>
+                {{ form_row(updateCustomerForm.name) }}
+            </div>
+
+            <div class="three fields">
+                <div class="field">
+                    <label>Téléphone</label>
+                    {{ form_row(updateCustomerForm.phone) }}
+                </div>
+                <div class="field">
+                    <label>Code Postal</label>
+                    {{ form_row(updateCustomerForm.cop) }}
+                </div>
+                <div class="field">
+                    <label>Ville</label>
+                    {{ form_row(updateCustomerForm.city) }}
+                </div>
+            </div>
+
+            <div class="field">
+                {{ form_widget(updateCustomerForm.submit, { label_html: true }) }}
+            </div>
+
+            {{ form_end(updateCustomerForm) }}
+        </form>
+
+        {{ component('Hr', {
+            icon: 'users',
+            title: 'Prestataires'
+        }) }}
+
+        <div class="section">
+
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Société</th>
+                    <th>Tél. Fixe</th>
+                    <th>Contact : Nom</th>
+                    <th>Contact : Tél.</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for prestataire in customer.prestataires %}
+                    <tr>
+                        <td><a href="{{ path('app_dashboard_update_prestataire', {id: prestataire.id}) }}">{{ prestataire.name }}</a></td>
+                        <td>{{ prestataire.phone }}</td>
+                        <td>{{ prestataire.contactName }}</td>
+                        <td>{{ prestataire.contactPhone }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {{ component('Hr', {
+            icon: 'server',
+            title: 'Serveurs'
+        }) }}
+
+        <div class="section">
+
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Nom du serveur</th>
+                    <th>Client</th>
+                    <th>Type</th>
+                    <th>IP Locale</th>
+                    <th>IP Publique</th>
+                    <th>Identifiant</th>
+                    <th>Mot de passe</th>
+                    <th>Prise en main</th>
+                    <th class="th_action"><i class="delete icon"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for server in customer.servers %}
+                    {% if server not in app.user.serversForbidden %}
+                        <tr>
+                            <td><a href="{{ path('app_dashboard_update_server', {id: server.id}) }}">{{ server.name }}</a></td>
+                            <td>{{ server.customer.name }}</td>
+                            <td>{{ server.type.name ?? '' }}</td>
+                            <td>{{ server.localIp }}</td>
+                            <td>{{ server.publicIp }}</td>
+                            <td>{{ server.login }}</td>
+                            <td>{{ server.password }}</td>
+                            <td>{{ server.remoteControl.name ?? '' }}</td>
+                            <td><a class="ui red label" href="{{ path('app_dashboard_delete_server', {id: server.id}) }}">Supprimer</a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        {{ component('Hr', {
+            icon: 'cube',
+            'title': "Logiciels"
+        }) }}
+
+        <div class="section">
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Identifiant</th>
+                    <th>Mot de passe</th>
+                    <th class="th_action"><i class="close icon"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for software in customer.software %}
+                    {% if software not in app.user.softwaresForbidden %}
+                    <tr>
+                        <td><a href="{{ path('app_dashboard_software_edit', {id: software.id}) }}">{{ software.type.name }}</a></td>
+                        <td>{{ software.username }}</td>
+                        <td>{{ software.password }}</td>
+                        <td><a class="ui red label" href="{{ path('app_dashboard_software_delete', {id: software.id}) }}">Supprimer</a></td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {{ component('Hr', {
+            icon: 'database',
+            title: 'Bases de données'
+        }) }}
+
+        <div class="section">
+
+
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Identifiant</th>
+                    <th>Mot de passe</th>
+                    <th class="th_action"><i class="close icon"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for database in customer.bdd %}
+                    {% if database not in app.user.databasesForbidden %}
+                    <tr>
+                        <td><a href="{{ path('app_dashboard_database_edit', {id: database.id}) }}">{{ database.type.name }}</a></td>
+                        <td>{{ database.username }}</td>
+                        <td>{{ database.password }}</td>
+                        <td><a class="ui red label" href="{{ path('app_dashboard_database_delete', {id: database.id}) }}">Supprimer</a></td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+{% endblock %}

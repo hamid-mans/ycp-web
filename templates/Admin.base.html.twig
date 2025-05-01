@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Web YCP - {% block title %}{% endblock %}</title>
+
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    {% block stylesheets %}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+    <div class="ui fixed inverted segment menu-top" style="margin: 0 !important;">
+
+    </div>
+
+    <div class="ui left fixed vertical menu p_sidebar">
+        <div class="menu menu-top p_logo">
+            <img src="{{ asset('images/logo_white.png') }}" alt="">
+        </div>
+        <ul>
+            <li><a class="it" href="{{ path('app_dashboard_home') }}"> <span><i class="sidebaricon briefcase icon"></i> Accueil</span></a></li>
+            <li><a class="it" href="{{ path('app_dashboard_customers') }}"> <span><i class="sidebaricon users icon"></i> Clients</span> </a></li>
+            <li><a class="it" href="{{ path('app_dashboard_prestataires') }}"> <span><i class="sidebaricon address book icon"></i></span> Prestataires</a></li>
+
+            <br>
+
+            <li><a class="it" href="{{ path('app_dashboard_servers') }}"> <span><i class="sidebaricon server icon"></i> Serveurs</span></a></li>
+            <li><a class="it" href="{{ path('app_dashboard_software') }}"> <span><i class="sidebaricon cube icon"></i> Logiciels</span></a></li>
+            <li><a class="it" href="{{ path('app_dashboard_database') }}"> <span><i class="sidebaricon database icon"></i> B. Données</span></a></li>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <br>
+                <li><a class="it" href="{{ path('app_dashboard_home') }}"> <span><i class="sidebaricon yellow shield alternate icon"></i> YCP</span></a></li>
+                <li><a class="it" href="{{ path('app_dashboard_traceur') }}"> <span><i class="sidebaricon yellow save icon"></i> Traceur</span></a></li>
+                <li><a class="it" href="{{ path('app_dashboard_settings') }}"> <span><i class="sidebaricon yellow cogs icon"></i> Paramètres</span></a></li>
+            {% else %}
+                <br>
+            {% endif %}
+            <br>
+            <li><a class="it" href="{{ path('app_logout') }}"> <span><i class="sidebaricon red sign-out icon"></i> Déconnexion</span> </a></li>
+        </ul>
+    </div>
+
+{% block body %}{% endblock %}
+
+    <script src="{{ asset('js/main.js') }}"></script>
+</body>
+</html>

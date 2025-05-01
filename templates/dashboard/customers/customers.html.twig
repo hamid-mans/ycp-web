@@ -1,0 +1,69 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Clients{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header">
+            Liste des clients
+        </h2>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+            <br>
+        {% endfor %}
+
+        {% for msg in app.flashes('success') %}
+            {{ component('Alert', {type: 'success', text: msg}) }}
+            <br>
+        {% endfor %}
+
+        <a href="{{ path('app_dashboard_new_customer') }}">
+            <button class="ui icon labeled green button">
+                <i class="plus icon"></i>
+                Nouveau
+            </button>
+        </a>
+
+        {% if is_granted('ROLE_ADMIN') %}
+        <button class="ui icon labeled teal button" onclick="searchId()">
+            <i class="search icon"></i>
+            ID
+            <script>
+                let searchId = () => {
+					let id = prompt("Saisir l'ID")
+                    if(id) {
+						let url = "{{ path('app_dashboard_update_customer', { 'id': 'ID_REPLACE' }) }}"
+                        url = url.replace('ID_REPLACE', id)
+                        window.location.href = url
+                    }
+                }
+            </script>
+        </button>
+        {% endif %}
+        <br><br>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>Nom du client</th>
+                    <th>Téléphone</th>
+                    <th>Ville</th>
+                    {% if is_granted('ROLE_ADMIN') %}<th class="th_action"><i class="delete icon"></i></th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for customer in customers %}
+                <tr>
+                    <td><a href="{{ path('app_dashboard_update_customer', {id: customer.id}) }}">{{ customer.name }}</a></td>
+                    <td>{{ customer.phone }}</td>
+                    <td>{{ customer.cop ~ " " ~ customer.city }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}<td> <a class="ui red label" href="{{ path('app_dashboard_delete_customer', {id: customer.id}) }}">Supprimer</a></td>{% endif %}
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

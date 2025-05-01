@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Se connecter{% endblock %}
+
+{% block body %}
+
+    <div class="logo">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo Aqsès">
+    </div>
+
+    <form class="ui form block raised very padded text container segment" method="post">
+        {% if error %}
+            <div class="ui red header">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <h1>Connexion</h1>
+        <div class="field">
+            <label for="inputEmail">Email</label>
+            <input type="email" placeholder="Email" name="email" id="inputEmail" required autofocus>
+        </div>
+
+        <div class="field">
+            <label for="inputPassword">Mot de passe</label>
+            <input type="password" placeholder="Mot de passe" name="password" id="inputPassword" required>
+        </div>
+
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+        <div class="field">
+            <button class="ui clr_bg button" type="submit">
+                Se connecter
+            </button> - <a href="{{ path('app_home') }}">Retour à la page d'accueil</a>
+        </div>
+    </form>
+{% endblock %}

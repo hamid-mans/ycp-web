@@ -1,0 +1,105 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Modifier un utilisateur{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h1 class="ui header" title="{{ "ID : " ~ user.id }}">
+            Utilisateur : {{ user.name }}
+        </h1><br>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+            <br>
+        {% endfor %}
+
+        <form class="ui form" method="POST">
+            {{ form_start(registrationForm) }}
+
+            <div class="field">
+                <label>Prénom</label>
+                {{ form_row(registrationForm.name, {
+                    'attr': {
+                        'disabled': ('ROLE_ADMIN' in user.roles)
+                    }
+                }) }}
+            </div>
+
+            <div class="field">
+                <label>Email</label>
+                {{ form_row(registrationForm.email, {
+                    'attr': {
+                        'disabled': ('ROLE_ADMIN' in user.roles)
+                    }
+                }) }}
+            </div>
+
+            <div class="field">
+                <label>Mot de passe</label>
+                {{ form_row(registrationForm.password, {
+                    'attr': {
+                        'disabled': ('ROLE_ADMIN' in user.roles)
+                    }
+                }) }}
+            </div>
+
+            <div class="field">
+                <label>Rôles</label>
+                {{ form_row(registrationForm.roles, {
+                    'attr': {
+                        'disabled': ('ROLE_ADMIN' in user.roles)
+                    }
+                }) }}
+            </div>
+
+            {{ component('Hr', {
+                icon: 'close',
+                title: 'Restrictions'
+            }) }}
+
+            <div class="two fields">
+                <div class="field">
+                    <label>Restrictions serveurs</label>
+                    {{ form_widget(registrationForm.serversForbidden, {
+                        'attr': {
+                            'disabled': ('ROLE_ADMIN' in user.roles)
+                        }
+                    }) }}
+                </div>
+
+
+                <div class="field">
+                    <label>Restrictions logiciels</label>
+                    {{ form_widget(registrationForm.softwaresForbidden, {
+                        'attr': {
+                            'disabled': ('ROLE_ADMIN' in user.roles)
+                        }
+                    }) }}
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <label>Restrictions bases de données</label>
+                    {{ form_widget(registrationForm.databasesForbidden, {
+                        'attr': {
+                            'disabled': ('ROLE_ADMIN' in user.roles)
+                        }
+                    }) }}
+                </div>
+            </div>
+
+            <div class="field">
+                {{ form_widget(registrationForm.submit, {
+                    'label_html': true,
+                    'disabled': ('ROLE_ADMIN' in user.roles)
+                }) }}
+            </div>
+
+            {{ form_rest(registrationForm) }}
+            {{ form_end(registrationForm) }}
+        </form>
+
+    </div>
+{% endblock %}

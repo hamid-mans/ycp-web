@@ -1,0 +1,25 @@
+<style>
+    .alert_success {
+        background-color: rgba(128, 209, 149, 0.5);
+        padding: 13px;
+        border-radius: 5px;
+        color: #3b3b3b;
+    }
+
+    .alert_error {
+        background-color: rgba(234, 136, 136, 0.5);
+        padding: 13px;
+        border-radius: 5px;
+        color: #3b3b3b;
+    }
+</style>
+
+{% if type == 'error' %}
+    <div class="alert_error">
+        {{ text }}
+    </div>
+{% elseif type == 'success' %}
+    <div class="alert_success">
+        {{ text }}
+    </div>
+{% endif %}

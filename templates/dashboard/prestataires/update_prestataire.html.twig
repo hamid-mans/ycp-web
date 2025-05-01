@@ -1,0 +1,78 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Préstataire : {{ prestataire.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header" title="{{ "ID : " ~ prestataire.id }}">
+            Préstataire : {{ prestataire.name }}
+        </h2><br>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+        {% endfor %}
+
+        {% for msg in app.flashes('success') %}
+            {{ component('Alert', {type: 'success', text: msg}) }}
+        {% endfor %}
+
+        <br><form method="POST" class="ui form">
+            {{ form_start(form) }}
+
+            <div class="field">
+                <label>Nom de la société</label>
+                {{ form_row(form.name) }}
+            </div>
+
+            <div class="three fields">
+                <div class="field">
+                    <label>Code Postal</label>
+                    {{ form_row(form.cop) }}
+                </div>
+                <div class="field">
+                    <label>Ville</label>
+                    {{ form_row(form.city) }}
+                </div>
+                <div class="field">
+                    <label>Téléphone</label>
+                    {{ form_row(form.phone) }}
+                </div>
+
+            </div>
+
+            <br>
+
+            <div class="two fields">
+                <div class="field">
+                    <label>Nom du contact</label>
+                    {{ form_row(form.contact_name) }}
+                </div>
+
+                <div class="field">
+                    <label>Téléphone du contact</label>
+                    {{ form_row(form.contact_phone) }}
+                </div>
+            </div>
+
+            <br>
+
+            <div class="field">
+                <label>Rattacher des clients</label>
+                {{ form_widget(form.customer) }}
+                <i><a href="{{ path('app_dashboard_customers') }}">Liste des clients</a></i> - <i><a href="{{ path('app_dashboard_new_customer') }}">Créer un client</a></i>
+            </div>
+
+            <div class="field">
+                {{ form_widget(form.submit, {
+                    label_html: true
+                }) }}
+            </div>
+
+            {{ form_end(form) }}
+        </form>
+
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Créer un utilisateur{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h1 class="ui header">
+            Créer un utilisateur
+        </h1><br>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+            <br>
+        {% endfor %}
+
+        <form class="ui form" method="POST">
+            {{ form_start(registrationForm) }}
+
+            <div class="field">
+                <label>Prénom</label>
+                {{ form_row(registrationForm.name) }}
+            </div>
+
+            <div class="field">
+                <label>Email</label>
+                {{ form_row(registrationForm.email) }}
+            </div>
+
+            <div class="field">
+                <label>Mot de passe</label>
+                {{ form_row(registrationForm.password) }}
+            </div>
+
+            <div class="field">
+                <label>Rôles</label>
+                {{ form_row(registrationForm.roles) }}
+            </div>
+
+            <div class="field">
+                {{ form_widget(registrationForm.submit, { 'label_html': true }) }}
+            </div>
+
+            <div style="display: none;">
+                {{ form_widget(registrationForm.serversForbidden) }}
+            </div>
+
+            {{ form_rest(registrationForm) }}
+            {{ form_end(registrationForm) }}
+        </form>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Nouveau type de base de données{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header">
+            Nouveau type de base de données
+        </h2><br>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+        {% endfor %}
+
+        {% for msg in app.flashes('success') %}
+            {{ component('Alert', {type: 'success', text: msg}) }}
+        {% endfor %}
+
+        <br><form method="POST" class="ui form">
+            {{ form_start(form) }}
+
+            <div class="field">
+                <label>Nom</label>
+                {{ form_row(form.name) }}
+            </div>
+
+            <div class="field">
+                {{ form_widget(form.submit, { label_html: true }) }}
+            </div>
+
+            {{ form_end(form) }}
+        </form>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Modifier un serveur{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header" title="{{ "ID : " ~ server.id }}">
+            Serveur {{ server.name ~ " de " ~ server.customer.name }}
+        </h2><br>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+        {% endfor %}
+
+        {% for msg in app.flashes('success') %}
+            {{ component('Alert', {type: 'success', text: msg}) }}
+        {% endfor %}
+
+        <br><form method="POST" class="ui form">
+            {{ form_start(editServerForm) }}
+
+            <div class="three fields">
+                <div class="field">
+                    <label>Nom du serveur (obligatoire)</label>
+                    {{ form_row(editServerForm.name) }}
+                </div>
+
+                <div class="field">
+                    <label>Client (obligatoire)</label>
+                    {{ form_widget(editServerForm.customer) }}
+                </div>
+
+                <div class="field">
+                    <label>Type</label>
+                    {{ form_widget(editServerForm.type) }}
+                </div>
+            </div>
+
+            <div class="five fields">
+                <div class="field">
+                    <label>IP Locale</label>
+                    {{ form_row(editServerForm.localIp) }}
+                </div>
+
+                <div class="field">
+                    <label>IP Publique</label>
+                    {{ form_row(editServerForm.publicIp) }}
+                </div>
+
+                <div class="field">
+                    <label>Prise de main</label>
+                    {{ form_widget(editServerForm.remoteControl) }}
+                </div>
+
+                <div class="field">
+                    <label>Identifiant</label>
+                    {{ form_row(editServerForm.login) }}
+                </div>
+
+                <div class="field">
+                    <label>Mot de passe</label>
+                    {{ form_row(editServerForm.password) }}
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Commentaire</label>
+                {{ form_row(editServerForm.comment) }}
+            </div>
+
+            <div class="field">
+                {{ form_widget(editServerForm.submit, { label_html: true }) }}
+            </div>
+
+            {{ form_end(editServerForm) }}
+        </form>
+
+
+    </div>
+
+{% endblock %}

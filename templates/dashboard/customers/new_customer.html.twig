@@ -1,0 +1,55 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Nouveau client{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header">
+            Nouveau client
+        </h2><br>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+        {% endfor %}
+
+        {% for msg in app.flashes('success') %}
+            {{ component('Alert', {type: 'success', text: msg}) }}
+        {% endfor %}
+
+        <br><form method="POST" class="ui form">
+            {{ form_start(createCustomerForm) }}
+
+            <div class="field">
+                <label>Nom du client</label>
+                {{ form_row(createCustomerForm.name) }}
+            </div>
+
+            <div class="three fields">
+                <div class="field">
+                    <label>Téléphone</label>
+                    {{ form_row(createCustomerForm.phone) }}
+                </div>
+                <div class="field">
+                    <label>Code Postal</label>
+                    {{ form_row(createCustomerForm.cop) }}
+                </div>
+                <div class="field">
+                    <label>Ville</label>
+                    {{ form_row(createCustomerForm.city) }}
+                </div>
+            </div>
+
+            <div class="field">
+                {{ form_widget(createCustomerForm.submit, {
+                    label_html: true
+                }) }}
+            </div>
+
+            {{ form_end(createCustomerForm) }}
+        </form>
+
+
+    </div>
+
+{% endblock %}

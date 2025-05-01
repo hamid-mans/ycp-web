@@ -1,0 +1,76 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Prestataires{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header">
+            Liste des prestataires
+        </h2>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+            <br>
+        {% endfor %}
+
+        {% for msg in app.flashes('success') %}
+            {{ component('Alert', {type: 'success', text: msg}) }}
+            <br>
+        {% endfor %}
+
+        <a href="{{ path('app_dashboard_prestataire_new') }}">
+            <button class="ui icon labeled green button">
+                <i class="plus icon"></i>
+                Nouveau
+            </button>
+        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <button class="ui icon labeled teal button" onclick="searchId()">
+                <i class="search icon"></i>
+                ID
+                <script>
+					let searchId = () => {
+						let id = prompt("Saisir l'ID")
+						if(id) {
+							let url = "{{ path('app_dashboard_update_prestataire', { 'id': 'ID_REPLACE' }) }}"
+							url = url.replace('ID_REPLACE', id)
+							window.location.href = url
+						}
+					}
+                </script>
+            </button>
+        {% endif %}
+
+        <br><br>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Code Postal</th>
+                <th>Ville</th>
+                <th>Tél.</th>
+                <th>Contact : Nom</th>
+                <th>Contact : Tél.</th>
+                <th class="th_action"><i class="delete icon"></i></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for presta in prestataires %}
+                <tr>
+                    <td><a href="{{ path('app_dashboard_update_prestataire', {id: presta.id}) }}">{{ presta.name }}</a></td>
+                    <td>{{ presta.cop }}</td>
+                    <td>{{ presta.city }}</td>
+                    <td>{{ presta.phone }}</td>
+                    <td>{{ presta.contactName }}</td>
+                    <td>{{ presta.contactPhone }}</td>
+                    <td>
+                        <a class="ui red label" href="{{ path('app_dashboard_delete_prestataire', {id: presta.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

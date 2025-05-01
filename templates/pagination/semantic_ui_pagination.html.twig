@@ -1,0 +1,39 @@
+{# templates/pagination/semantic_ui_pagination.html.twig #}
+
+{% if pageCount > 1 %}
+    <div class="ui pagination menu">
+
+        {% if previous is defined %}
+            <a class="icon item" href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({(pageParameterName): previous})) }}">
+                <i class="angle left icon"></i>
+            </a>
+        {% else %}
+            <div class="disabled icon item">
+                <i class="angle left icon"></i>
+            </div>
+        {% endif %}
+
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                <a class="item" href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({(pageParameterName): page})) }}">
+                    {{ page }}
+                </a>
+            {% else %}
+                <div class="active item">
+                    {{ page }}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {% if next is defined %}
+            <a class="icon item" href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({(pageParameterName): next})) }}">
+                <i class="angle right icon"></i>
+            </a>
+        {% else %}
+            <div class="disabled icon item">
+                <i class="angle right icon"></i>
+            </div>
+        {% endif %}
+
+    </div>
+{% endif %}

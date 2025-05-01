@@ -1,0 +1,62 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Nouveau logiciel cleint{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header">
+            Nouveau logiciel client
+        </h2><br>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+        {% endfor %}
+
+        {% for msg in app.flashes('success') %}
+            {{ component('Alert', {type: 'success', text: msg}) }}
+        {% endfor %}
+
+        <br><form method="POST" class="ui form">
+            {{ form_start(form) }}
+
+            <div class="two fields">
+                <div class="field">
+                    <label>Nom du logiciel</label>
+                    {{ form_widget(form.type) }}
+                </div>
+
+                <div class="field">
+                    <label>Client (obligatoire)</label>
+                    {{ form_widget(form.customer) }}
+                </div>
+            </div>
+
+            <div class="two fields">
+                <div class="field">
+                    <label>Identifiant</label>
+                    {{ form_row(form.username) }}
+                </div>
+
+                <div class="field">
+                    <label>Mot de passe</label>
+                    {{ form_widget(form.password) }}
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Commentaire</label>
+                {{ form_row(form.comment) }}
+            </div>
+
+            <div class="field">
+                {{ form_widget(form.submit, { label_html: true }) }}
+            </div>
+
+            {{ form_end(form) }}
+        </form>
+
+
+    </div>
+
+{% endblock %}

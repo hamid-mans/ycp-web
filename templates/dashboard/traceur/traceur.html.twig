@@ -1,0 +1,78 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Traceur{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header">
+            <i class="yellow save icon"></i>Traceur
+        </h2><br>
+
+        <form method="GET" class="ui form">
+            {{ form_start(form) }}
+            <div class="four fields">
+                <div class="field">
+                    <label>Type</label>
+                    {{ form_widget(form.type) }}
+                </div>
+
+                <div class="field">
+                    <label>Document</label>
+                    {{ form_widget(form.data) }}
+                </div>
+
+                <div class="field">
+                    <label>Numéro document</label>
+                    {{ form_row(form.dataId) }}
+                </div>
+
+                <div class="field">
+                    <label>Utilisateur</label>
+                    {{ form_row(form.username) }}
+                </div>
+            </div>
+
+            <div class="field">
+                {{ form_widget(form.submit, {
+                    label_html: true
+                }) }}
+
+                <a href="{{ path('app_dashboard_traceur') }}">
+                    <div class="ui labeled icon teal button">
+                        <i class="refresh icon"></i> Restaurer par défaut
+                    </div>
+                </a>
+            </div>
+            {{ form_end(form) }}
+        </form>
+
+        <table class="ui celled table" style="margin-top: 50px;">
+            <thead>
+            <tr>
+                <th>Action</th>
+                <th>Type de donnée</th>
+                <th>Numéro du document</th>
+                <th>Utilisateur</th>
+                <th>Date / Heure</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for trace in pagination %}
+                <tr>
+                    <td>{{ trace.type }}</td>
+                    <td>{{ trace.data }}</td>
+                    <td>{{ trace.dataId }}</td>
+                    <td>{{ trace.username }}</td>
+                    <td>{{ trace.datetime|date("d F Y / H:i") }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            {{ knp_pagination_render(pagination, 'pagination/semantic_ui_pagination.html.twig') }}
+        </div>
+    </div>
+
+{% endblock %}

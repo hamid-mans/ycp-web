@@ -1,0 +1,93 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Gestion{% endblock %}
+
+{% block body %}
+
+<div class="ui content">
+    <h2 class="ui header">
+        Bienvenue {{ app.user.name ~ "," }}
+    </h2><br>
+
+    <div class="ui statistics">
+        <div class="statistic">
+            <div class="value">
+                <i class="green users icon"></i> {{ customersCount }}
+            </div>
+            <div class="label">
+                Clients
+            </div>
+        </div>
+
+
+        <div class="statistic">
+            <div class="value">
+                <i class="red server icon"></i> {{ serversCount }}
+            </div>
+            <div class="label">
+                Serveurs
+            </div>
+        </div>
+
+        <div class="statistic">
+            <div class="value">
+                <i class="orange cube icon"></i> {{ softwaresCount }}
+            </div>
+            <div class="label">
+                Logiciels
+            </div>
+        </div>
+
+        <div class="statistic">
+            <div class="value">
+                <i class="blue database icon"></i> {{ databasesCount }}
+            </div>
+            <div class="label">
+                Bases de données
+            </div>
+        </div>
+
+    </div>
+    <br>
+
+    <div class="ui icon message">
+        <i class="quote left icon"></i>
+        <div class="content">
+            <h3 class="ui header">Citation du jour</h3><br>
+            <i>{{ quote[0] }}</i><br><br>
+            de : <a title="En savoir plus" target="_blank" href="https://fr.wikipedia.org/w/index.php?search={{ quote[1] }}&title=Sp%C3%A9cial%3ARecherche&ns0=1">{{ quote[1] }}</a>
+        </div>
+    </div>
+
+    <form style="margin-top: 50px" method="POST" class="ui form">
+        {{ form_start(form) }}
+
+        <div class="field">
+            {{ component('Hr', {
+                icon: 'edit',
+                title: 'Notes communes'
+            }) }}
+
+            {% for msg in app.flashes('success') %}
+                {{ component('Alert', {type: 'success', text: msg}) }}
+                <br><br>
+            {% endfor %}
+
+            {{ form_row(form.notes, {
+                attr: {
+                    style: 'background-color: rgba(255, 255, 255, 0.7); font-size: 20px'
+                }
+            }) }}
+        </div>
+
+        <div class="field">
+            {{ form_widget(form.submit, {
+                label_html: true
+            }) }}
+        </div>
+
+        {{ form_end(form) }}
+    </form>
+</div>
+
+{% endblock %}

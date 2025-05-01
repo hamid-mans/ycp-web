@@ -1,0 +1,73 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Base de données{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header">
+            Liste des bases de données
+        </h2>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+            <br>
+        {% endfor %}
+
+        {% for msg in app.flashes('success') %}
+            {{ component('Alert', {type: 'success', text: msg}) }}
+            <br>
+        {% endfor %}
+
+        <a href="{{ path('app_dashboard_database_new') }}">
+            <button class="ui icon labeled green button">
+                <i class="plus icon"></i>
+                Nouvelle
+            </button>
+        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <button class="ui icon labeled teal button" onclick="searchId()">
+                <i class="search icon"></i>
+                ID
+                <script>
+					let searchId = () => {
+						let id = prompt("Saisir l'ID")
+						if(id) {
+							let url = "{{ path('app_dashboard_database_edit', { 'id': 'ID_REPLACE' }) }}"
+							url = url.replace('ID_REPLACE', id)
+							window.location.href = url
+						}
+					}
+                </script>
+            </button>
+        {% endif %}
+
+
+        <br><br>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>Client</th>
+                <th>Type</th>
+                <th>Identifiant</th>
+                <th>Mot de passe</th>
+                <th class="th_action"><i class="delete icon"></i></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for database in databases %}
+                <tr>
+                    <td><a href="{{ path('app_dashboard_database_edit', {id: database.id}) }}">{{ database.customer.name }}</a></td>
+                    <td>{{ database.type.name }}</td>
+                    <td>{{ database.username }}</td>
+                    <td>{{ database.password }}</td>
+                    <td>
+                        <a class="ui red label" href="{{ path('app_dashboard_database_delete', {id: database.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
