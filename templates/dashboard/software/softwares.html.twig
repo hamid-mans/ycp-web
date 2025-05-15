@@ -64,6 +64,42 @@
             {% endfor %}
             </tbody>
         </table>
+
+
+        <br><br><h2 class="ui header">
+            Moteur de déploiement (Webdev)
+        </h2>
+        <a href="{{ path('app_dashboard_software_webdev_add') }}">
+            <button class="ui icon labeled green button">
+                <i class="plus icon"></i>
+                Nouveau
+            </button>
+        </a>
+
+        <br><br>
+        <table class="ui celled table">
+            <thead>
+            <tr>
+                <th>Client</th>
+                <th>Numéro de série</th>
+                <th>Clé d'activation</th>
+                <th>Date d'échéance</th>
+                <th class="th_action"><i class="delete icon"></i></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for webdev in webdevs %}
+                <tr>
+                    <td><a href="{{ path('app_dashboard_software_webdev_update', {id: webdev.id}) }}">{{ webdev.customer.name }}</a></td>
+                    <td>{{ webdev.serialNumber }}</td>
+                    <td>{{ webdev.activationKey }}</td>
+                    <td>{{ webdev.echeanceDate|date("d F Y") }}</td>
+                    <td><a class="ui red label" href="{{ path('app_dashboard_software_webdev_delete', {id: webdev.id}) }}">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
     </div>
 
 {% endblock %}

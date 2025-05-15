@@ -151,6 +151,34 @@
         </div>
 
         {{ component('Hr', {
+            icon: 'cloud',
+            title: 'Moteur de déploiement (Webdev)'
+        }) }}
+
+        <div class="section">
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Numéro de série</th>
+                    <th>Clé d'activation</th>
+                    <th>Date d'échéance</th>
+                    <th class="th_action"><i class="close icon"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for webdev in customer.webdevs %}
+                    <tr>
+                        <td><a href="{{ path('app_dashboard_database_edit', {id: webdev.id}) }}">{{ webdev.serialNumber }}</a></td>
+                        <td>{{ webdev.activationKey }}</td>
+                        <td>{{ webdev.echeanceDate|date('d M Y') }}</td>
+                        <td><a class="ui red label" href="{{ path('app_dashboard_software_webdev_delete', {id: webdev.id}) }}">Supprimer</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {{ component('Hr', {
             icon: 'database',
             title: 'Bases de données'
         }) }}
@@ -182,6 +210,8 @@
             </table>
         </div>
 
-    </div>
+
+
+    </div><br><br><br>
 
 {% endblock %}

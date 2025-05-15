@@ -51,12 +51,19 @@ class Customers
     #[ORM\OneToMany(targetEntity: Software::class, mappedBy: 'customer')]
     private Collection $software;
 
+    /**
+     * @var Collection<int, Webdev>
+     */
+    #[ORM\OneToMany(targetEntity: Webdev::class, mappedBy: 'customer')]
+    private Collection $webdevs;
+
     public function __construct()
     {
         $this->servers = new ArrayCollection();
         $this->prestataires = new ArrayCollection();
         $this->bdd = new ArrayCollection();
         $this->software = new ArrayCollection();
+        $this->webdevs = new ArrayCollection();
     }
 
 
@@ -225,6 +232,36 @@ class Customers
             // set the owning side to null (unless already changed)
             if ($software->getCustomer() === $this) {
                 $software->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Webdev>
+     */
+    public function getWebdevs(): Collection
+    {
+        return $this->webdevs;
+    }
+
+    public function addWebdev(Webdev $webdev): static
+    {
+        if (!$this->webdevs->contains($webdev)) {
+            $this->webdevs->add($webdev);
+            $webdev->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWebdev(Webdev $webdev): static
+    {
+        if ($this->webdevs->removeElement($webdev)) {
+            // set the owning side to null (unless already changed)
+            if ($webdev->getCustomer() === $this) {
+                $webdev->setCustomer(null);
             }
         }
 

@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Software;
+use App\Entity\Webdev;
 use App\Form\SoftwareType;
+use App\Form\WebdevType;
 use App\Repository\SoftwareRepository;
+use App\Repository\WebdevRepository;
 use App\Service\TraceurService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,10 +26,11 @@ class SoftwareController extends AbstractController
     }
 
     #[Route('', name: 'app_dashboard_software')]
-    public function index(SoftwareRepository $softwareRepository): Response
+    public function index(SoftwareRepository $softwareRepository, WebdevRepository $webdevRepository): Response
     {
         return $this->render('dashboard/software/softwares.html.twig', [
             'softwares' => $softwareRepository->findAllUser($this->getUser()),
+            'webdevs' => $webdevRepository->findAll()
         ]);
     }
 
@@ -94,6 +98,71 @@ class SoftwareController extends AbstractController
             $this->traceur->trace("DELETE", "Logiciels", $temp_id);
 
             $this->addFlash('success', 'Logiciel client supprimé avec succès');
+        }
+
+        return $this->redirectToRoute('app_dashboard_software');
+    }
+
+    #[Route('/webdev/nouveau', name: 'app_dashboard_software_webdev_add')]
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $webdev = new Webdev();
+
+        $form = $this->createForm(WebdevType::class, $webdev, [
+            'submit_label' => '<i class="plus icon"></i>Ajouter',
+            'submit_class' => 'ui labeled icon green button'
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($webdev);
+            $entityManager->flush();
+
+            $this->traceur->trace("CREATE", "Webdev", $webdev->getId());
+            $this->addFlash('success', 'Webdev a bien été ajouté');
+
+            return $this->redirectToRoute('app_dashboard_software');
+        }
+
+        return $this->render('dashboard/software/webdev/add_webdev.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/webdev/modifier/{id}', name: 'app_dashboard_software_webdev_update')]
+    public function update(Request $request, Webdev $webdev, EntityManagerInterface $enntityManager): Response
+    {
+        $form = $this->createForm(WebdevType::class, $webdev, [
+            'submit_label' => '<i class="edit icon"></i>Mettre à jour',
+            'submit_class' => 'ui labeled icon orange button'
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $enntityManager->persist($webdev);
+            $enntityManager->flush();
+
+            $this->traceur->trace('UPDATE', 'Webdev', $webdev->getId());
+            $this->addFlash('success', 'Webdev modifié avec succès !');
+
+            return $this->redirectToRoute('app_dashboard_software');
+        }
+
+        return $this->render('dashboard/software/webdev/edit_webdev.html.twig', [
+            'webdev' => $webdev,
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/webdev/supprimer/{id}', 'app_dashboard_software_webdev_delete')]
+    public function deleteWebdev(int $id, WebdevRepository $webdevRepository, EntityManagerInterface $entityManager): Response
+    {
+        $webdev = $webdevRepository->find($id);
+
+        if($webdev) {
+            $entityManager->remove($webdev);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_dashboard_software');

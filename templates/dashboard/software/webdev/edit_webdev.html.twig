@@ -1,0 +1,60 @@
+{% extends 'Admin.base.html.twig' %}
+
+{% block title %}Modifier Webdev de : {{ webdev.customer.name }}{% endblock %}
+
+{% block body %}
+
+    <div class="ui content">
+        <h2 class="ui header">
+            Modifier Webdev de : {{ webdev.customer.name }}
+        </h2><br>
+
+        {% for msg in app.flashes('error') %}
+            {{ component('Alert', {type: 'error', text: msg}) }}
+        {% endfor %}
+
+        {% for msg in app.flashes('success') %}
+            {{ component('Alert', {type: 'success', text: msg}) }}
+        {% endfor %}
+
+        <br><form method="POST" class="ui form">
+            {{ form_start(form) }}
+
+
+            <div class="field">
+                <label>Client</label>
+                {{ form_widget(form.customer) }}
+            </div>
+
+            <div class="three fields">
+                <div class="field">
+                    <label>Numéro de série</label>
+                    {{ form_widget(form.serialNumber) }}
+                </div>
+
+                <div class="field">
+                    <label>Clé d'activation</label>
+                    {{ form_row(form.activationKey) }}
+                </div>
+
+                <div class="field">
+                    <label>Date d'échéance</label>
+                    {{ form_widget(form.echeanceDate) }}
+                </div>
+            </div>
+
+            <div class="two fields">
+
+            </div>
+
+            <div class="field">
+                {{ form_widget(form.submit, { label_html: true }) }}
+            </div>
+
+            {{ form_end(form) }}
+        </form>
+
+
+    </div>
+
+{% endblock %}
