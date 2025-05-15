@@ -163,6 +163,8 @@ class SoftwareController extends AbstractController
         if($webdev) {
             $entityManager->remove($webdev);
             $entityManager->flush();
+
+            $this->traceur->trace('DELETE', 'Webdev', $id);
         }
 
         return $this->redirectToRoute('app_dashboard_software');
